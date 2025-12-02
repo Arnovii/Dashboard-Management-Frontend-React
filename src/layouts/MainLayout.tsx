@@ -263,22 +263,6 @@ export default function MainLayout(): React.JSX.Element {
         <div style={styles.contentInner}>
           <div style={styles.topBar}>
             <h2 style={styles.topBarTitle}>Mi Panel</h2>
-            <div>
-              <Link 
-                to="/profile" 
-                style={{
-                  ...styles.profileLink,
-                  transform: hoveredProfile ? 'translateY(-2px) scale(1.05)' : 'translateY(0) scale(1)',
-                  boxShadow: hoveredProfile 
-                    ? '0 8px 20px rgba(102, 126, 234, 0.5)' 
-                    : '0 4px 12px rgba(102, 126, 234, 0.4)',
-                }}
-                onMouseEnter={() => setHoveredProfile(true)}
-                onMouseLeave={() => setHoveredProfile(false)}
-              >
-                👤 Ver perfil
-              </Link>
-            </div>
           </div>
 
           <Outlet />
