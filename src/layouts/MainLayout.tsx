@@ -8,9 +8,9 @@ const styles: { [k: string]: React.CSSProperties } = {
   root: {
     display: "flex",
     minHeight: "100vh",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    // background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    // color: "#fff",
     fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
-    color: "#fff",
     position: "relative",
   },
   sidebar: {
