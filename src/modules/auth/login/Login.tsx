@@ -17,7 +17,7 @@ const Login: React.FC = () => {
 
     try {
       await login(identifier, password);
-      window.location.href = "/products";
+      window.location.href = "/";
     } catch (err: any) {
       const msg =
         err?.response?.data?.message || "Error al iniciar sesión.";

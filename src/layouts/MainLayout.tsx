@@ -158,7 +158,7 @@ const styles: { [k: string]: React.CSSProperties } = {
 };
 
 const menuItems: { to: string; label: string; icon: string }[] = [
-  { to: "/home", label: "Inicio", icon: "🏠" },
+  { to: "/", label: "Inicio", icon: "🏠" },
   { to: "/products", label: "Ventas", icon: "🛍️" },
   { to: "/stats", label: "Estadísticas", icon: "📊" },
   { to: "/marketing", label: "Marketing", icon: "🏬" },
