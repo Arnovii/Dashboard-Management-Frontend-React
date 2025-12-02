@@ -66,7 +66,7 @@ export default function Stats() {
                     highlight // Prop opcional para destacar este KPI
                 />
                 <KPIBox
-                    title="Alertas Stock Bajo"
+                    title="Productos con Stock Bajo"
                     value={kpis?.lowStockAlerts}
                     isAlert={kpis?.lowStockAlerts > 0}
                 />
@@ -181,7 +181,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         transition: "transform 0.2s ease",
     },
     kpiTitle: {
-        fontSize: "13px",
+        fontSize: "13px", 
         textTransform: "uppercase",
         letterSpacing: "0.05em",
         color: "#94a3b8", // Texto gris suave
