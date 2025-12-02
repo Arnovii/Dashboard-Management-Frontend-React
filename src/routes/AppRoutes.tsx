@@ -20,7 +20,7 @@ export default function AppRoutes() {
             </Route>
             <Route element={<MainLayout />}>
                 <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>}/>
-                <Route path="/products" element={<PrivateRoute><Products/></PrivateRoute>} />
+                <Route path="/products" element={<Products/>} />
                 <Route path="/stats" element={<PrivateRoute><Stats/></PrivateRoute>} />
                 <Route path="/marketing" element={<PrivateRoute><Marketing/></PrivateRoute>} />
             </Route>
