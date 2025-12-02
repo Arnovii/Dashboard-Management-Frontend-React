@@ -161,7 +161,7 @@ const menuItems: { to: string; label: string; icon: string }[] = [
   { to: "/home", label: "Inicio", icon: "🏠" },
   { to: "/products", label: "Ventas", icon: "🛍️" },
   { to: "/stats", label: "Estadísticas", icon: "📊" },
-  { to: "/profile", label: "Perfil", icon: "👤" },
+  { to: "/marketing", label: "Marketing", icon: "🏬" },
 ];
 
 function Sidebar() {

@@ -16,7 +16,7 @@ const Login: React.FC = () => {
 
     try {
       await login(identifier, password);  // <- usar context
-      window.location.href = "/";         // <- redirección después del login
+      window.location.href = "/products";         // <- redirección después del login
     } catch (err: any) {
       const msg =
         err?.response?.data?.message ||

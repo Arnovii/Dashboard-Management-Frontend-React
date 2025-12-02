@@ -6,6 +6,8 @@ import Login from "../modules/auth/login/Login";
 import Register from "../modules/auth/register/Register";
 import NotFound from "../modules/errors/pages/NotFound"
 import Products from "../modules/products/Products";
+import Stats from "../modules/stats/Stats";
+import Marketing from "../modules/marketing/Marketing";
 
 
 export default function AppRoutes() {
@@ -16,9 +18,10 @@ export default function AppRoutes() {
                 <Route path="/register" element={<Register/>} />
             </Route>
             <Route element={<MainLayout />}>
-                <Route path="/priv" element={<PrivateRoute><h1>PRIVADO</h1></PrivateRoute>} />
                 <Route path="/" element="testing" />
                 <Route path="/products" element={<PrivateRoute><Products/></PrivateRoute>} />
+                <Route path="/stats" element={<PrivateRoute><Stats/></PrivateRoute>} />
+                <Route path="/marketing" element={<PrivateRoute><Marketing/></PrivateRoute>} />
             </Route>
 
             {/* 404 */}
