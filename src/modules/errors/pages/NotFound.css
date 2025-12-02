@@ -1,0 +1,72 @@
+/* Fondo general */
+.notfound-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(to bottom, #f5f5f5, #e5e5e5);
+}
+
+/* Contenido centrado */
+.notfound-content {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Círculo 404 */
+.notfound-circle {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 30px auto;
+
+  background-color: #0e254d;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.notfound-code {
+  color: white;
+  font-size: 70px;
+  font-weight: bold;
+}
+
+/* Título */
+.notfound-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0e254d;
+  margin-bottom: 15px;
+}
+
+/* Texto */
+.notfound-text {
+  color: #555;
+  font-size: 18px;
+  max-width: 400px;
+  margin: 0 auto 30px auto;
+}
+
+/* Botón */
+.notfound-button {
+  display: inline-block;
+  background-color: #0e254d;
+  color: white;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+
+  transition: background-color 0.25s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.notfound-button:hover {
+  background-color: #0a1a3a;
+  transform: translateY(-1px);
+}
