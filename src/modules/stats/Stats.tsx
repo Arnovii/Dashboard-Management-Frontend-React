@@ -80,13 +80,13 @@ export default function Stats() {
                         <PieChart>
                             <Pie
                                 data={chartData}
-                                dataKey="value"  {/* Solo debe aparecer una vez */}
+                                dataKey="value"
                                 cx="50%"
                                 cy="50%"
                                 innerRadius={60}
                                 outerRadius={85}
                                 paddingAngle={5}
-                                stroke="none"    {/* Recomendado para estilo minimalista (quita bordes) */}
+                                stroke="none"
                             >
                                 {chartData.map((_, index) => (
                                     <Cell
@@ -95,27 +95,19 @@ export default function Stats() {
                                     />
                                 ))}
                             </Pie>
-                            {chartData.map((_, index) => (
-                                <Cell
-                                    key={`cell-${index}`}
-                                    fill={COLORS[index % COLORS.length]}
-                                    stroke="none" // Elimina bordes para un look plano
-                                />
-                            ))}
-                        </Pie>
-                        <Tooltip content={<CustomTooltip />} />
-                        <Legend
-                            verticalAlign="bottom"
-                            height={36}
-                            iconType="circle"
-                            wrapperStyle={{ fontSize: "12px", color: "#64748b" }}
-                        />
-                    </PieChart>
-                </ResponsiveContainer>
+                            <Tooltip content={<CustomTooltip />} />
+                            <Legend
+                                verticalAlign="bottom"
+                                height={36}
+                                iconType="circle"
+                                wrapperStyle={{ fontSize: "12px", color: "#64748b" }}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
         </div>
-    </div >
-  );
+    );
 }
 
 // --- Componentes Auxiliares ---
