@@ -18,7 +18,7 @@ export default function AppRoutes() {
             <Route element={<MainLayout />}>
                 <Route path="/priv" element={<PrivateRoute><h1>PRIVADO</h1></PrivateRoute>} />
                 <Route path="/" element="testing" />
-                <Route path="/products" element={<PrivateRoute><Products/></PrivateRoute>} />
+                <Route path="/products" element={<Products/>} />
             </Route>
 
             {/* 404 */}
