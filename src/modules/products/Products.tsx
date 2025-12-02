@@ -13,6 +13,8 @@ type Product = {
   quantity: number;
 };
 
+const CATEGORIES = ['Tecnologia', 'Electronica', 'Computacion', 'Ropa', 'Deportes', 'Hogar'];
+
 export default function Products(): React.JSX.Element {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -286,12 +288,17 @@ export default function Products(): React.JSX.Element {
 
             <div className="swk-products-form-field">
               <label className="swk-products-label">Categoría</label>
-              <input 
+              <select 
                 className="swk-products-input"
                 required 
                 value={createForm.category} 
-                onChange={(e) => setCreateForm({ ...createForm, category: e.target.value })} 
-              />
+                onChange={(e) => setCreateForm({ ...createForm, category: e.target.value })}
+              >
+                <option value="">Selecciona una categoría</option>
+                {CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
             </div>
 
             <div className="swk-products-form-field swk-products-form-field-full">
@@ -399,11 +406,16 @@ export default function Products(): React.JSX.Element {
 
             <div className="swk-products-form-field">
               <label className="swk-products-label">Categoría</label>
-              <input 
+              <select 
                 className="swk-products-input"
                 value={editForm.category as any} 
-                onChange={(e) => setEditForm({ ...editForm, category: e.target.value })} 
-              />
+                onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+              >
+                <option value="">Selecciona una categoría</option>
+                {CATEGORIES.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
             </div>
 
             <div className="swk-products-form-field swk-products-form-field-full">
