@@ -11,7 +11,7 @@ type Product = {
   image: string;
   price: number;
   quantity: number;
-  createdAt?: string | number;
+  // createdAt eliminado porque no se usa en la DB
 };
 
 export default function Products(): React.JSX.Element {
@@ -379,7 +379,6 @@ export default function Products(): React.JSX.Element {
                 <th>Categoría</th>
                 <th>Precio</th>
                 <th>Cantidad</th>
-                <th>Creado</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -395,7 +394,6 @@ export default function Products(): React.JSX.Element {
                     <td>{p.category}</td>
                     <td>{typeof p.price === "number" ? p.price.toFixed(2) : p.price}</td>
                     <td>{p.quantity ?? "-"}</td>
-                    <td>{p.createdAt ? new Date(p.createdAt).toLocaleString() : "-"}</td>
                     <td className="actions">
                       <button onClick={() => startEdit(p)}>Editar</button>
                       <button onClick={() => {
