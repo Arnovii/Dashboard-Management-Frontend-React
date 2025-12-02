@@ -126,32 +126,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const login = async (emailOrUsername: string, password: string) => {
-    const credentials = { correo: emailOrUsername, password_bash: password };
+const login = async (emailOrUsername: string, password: string) => {
+  // Body CORRECTO según tu API
+  const credentials = { identifier: emailOrUsername, password };
 
-    try {
-      const res = await api.post("/auth/login", credentials);
+  try {
+    // Debug: qué se va a enviar
+    console.log("%c[AUTH] - LOGIN REQUEST", "color: #0a66c2; font-weight: bold");
+    console.log("→ Endpoint:", `${api.defaults.baseURL}/auth/login`);
+    console.log("→ Payload:", credentials);
 
-      const {
-        token: newToken,
-        username,
-        email
-      } = res.data;
+    const res = await api.post("/auth/login", credentials);
 
-      const userObj: User = {
-        username,
-        correo: email
-      };
+    // Debug: qué responde el servidor
+    console.log("%c[AUTH] - LOGIN RESPONSE", "color: #0a8a00; font-weight: bold");
+    console.log("← Status:", res.status);
+    console.log("← Data:", res.data);
 
-      localStorage.setItem(LS_TOKEN_KEY, newToken);
-      localStorage.setItem(LS_USER_KEY, JSON.stringify(userObj));
+    const {
+      token: newToken,
+      username,
+      email
+    } = res.data;
 
-      setToken(newToken);
-      setUser(userObj);
-    } catch (err) {
-      throw err;
-    }
-  };
+    const userObj: User = {
+      username,
+      correo: email
+    };
+
+    localStorage.setItem(LS_TOKEN_KEY, newToken);
+    localStorage.setItem(LS_USER_KEY, JSON.stringify(userObj));
+
+    setToken(newToken);
+    setUser(userObj);
+  } catch (err) {
+    // Debug: error crudo
+    console.error("%c[AUTH] - LOGIN ERROR", "color: #b00020; font-weight: bold", err);
+    throw err; // dejamos que el llamador (Login.tsx) lo maneje
+  }
+};
 
   const logout = (redirect = true) => doLogout(redirect);
 
