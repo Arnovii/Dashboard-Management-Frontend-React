@@ -407,9 +407,10 @@ export default function Products(): React.JSX.Element {
             <div className="swk-products-form-field">
               <label className="swk-products-label">Categoría</label>
               <select 
-                className="swk-products-input"
+                className="swk-products-input swk-products-input-disabled"
                 value={editForm.category as any} 
                 onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+                disabled
               >
                 <option value="">Selecciona una categoría</option>
                 {CATEGORIES.map((cat) => (
