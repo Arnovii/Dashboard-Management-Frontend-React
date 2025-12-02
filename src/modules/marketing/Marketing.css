@@ -1,97 +1,323 @@
-.marketing-page {
-  padding: 18px;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  color: #111;
+/* Variables para mantener la consistencia "Sobria y Minimalista" */
+:root {
+  --mkt-bg: #f9fafb; /* Fondo general gris muy claro */
+  --mkt-card-bg: #ffffff;
+  --mkt-text-primary: #111827; /* Casi negro */
+  --mkt-text-secondary: #6b7280; /* Gris medio */
+  --mkt-border: #e5e7eb;
+  
+  --mkt-accent: #1f2937; /* Gris oscuro/Charcoal para acciones principales */
+  --mkt-accent-hover: #000000;
+  
+  --mkt-danger: #ef4444;
+  --mkt-danger-bg: #fef2f2;
+  --mkt-success-text: #065f46;
+  --mkt-success-bg: #d1fae5;
+  
+  --mkt-radius: 8px;
+  --mkt-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
 }
 
-.marketing-header {
+.mkt-container {
+  padding: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--mkt-bg);
+  min-height: 100vh;
+  color: var(--mkt-text-primary);
+}
+
+/* --- Header --- */
+.mkt-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+  align-items: flex-end;
+  margin-bottom: 32px;
 }
 
-.marketing-error {
-  background: #ffe7e7;
-  color: #8a0000;
-  padding: 8px;
-  border-radius: 6px;
-  margin-bottom: 12px;
+.mkt-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--mkt-text-primary);
+  letter-spacing: -0.5px;
 }
 
-.marketing-create {
-  background: #fff;
+.mkt-subtitle {
+  margin: 4px 0 0 0;
+  color: var(--mkt-text-secondary);
+  font-size: 14px;
+}
+
+/* --- Alerts --- */
+.mkt-alert {
+  background: var(--mkt-danger-bg);
+  color: #991b1b;
   padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
-  margin-bottom: 16px;
+  border-radius: var(--mkt-radius);
+  margin-bottom: 24px;
+  font-size: 14px;
+  border: 1px solid #fecaca;
 }
 
-.marketing-form label {
-  display: block;
-  font-weight: 600;
-  margin-top: 8px;
-}
-
-.marketing-form input[type="text"],
-.marketing-form input[type="number"],
-.marketing-form input[type="date"] {
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  margin-top: 6px;
-  box-sizing: border-box;
-}
-
-.marketing-actions { margin-top: 10px; display:flex; gap:8px; }
-
-.marketing-actions button {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  background: #2563eb;
-  color: white;
-  font-weight: 600;
-}
-
-.marketing-actions button[type="button"] { background:#ddd; color:#222; }
-
-.marketing-list { margin-top: 8px; }
-
-.marketing-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: 8px;
+/* --- Cards --- */
+.mkt-card {
+  background: var(--mkt-card-bg);
+  border-radius: var(--mkt-radius);
+  box-shadow: var(--mkt-shadow);
+  border: 1px solid var(--mkt-border);
+  margin-bottom: 24px;
   overflow: hidden;
 }
 
-.marketing-table th, .marketing-table td {
-  text-align: left;
-  padding: 10px;
-  border-bottom: 1px solid #f0f0f0;
+.mkt-create-section {
+  padding: 24px;
 }
 
-.badge {
-  padding: 6px 8px;
-  border-radius: 999px;
-  font-weight: 700;
+.mkt-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  color: var(--mkt-text-primary);
+}
+
+/* --- Form Grid System --- */
+.mkt-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mkt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 columnas */
+  gap: 20px;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+/* Inputs minimalistas */
+.mkt-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.mkt-field label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: var(--mkt-text-secondary);
+  margin-bottom: 6px;
+}
+
+.mkt-field input[type="text"],
+.mkt-field input[type="number"],
+.mkt-field input[type="date"] {
+  border: 1px solid var(--mkt-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--mkt-text-primary);
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.mkt-field input:focus {
+  border-color: #9ca3af;
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.1);
+}
+
+/* Checkbox personalizado sutil */
+.checkbox-field {
+  justify-content: flex-end; /* Alinear al fondo del grid */
+  padding-bottom: 10px;
+}
+
+.mkt-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mkt-checkbox-label input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--mkt-accent);
+}
+
+/* --- Buttons --- */
+.mkt-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--mkt-border);
+}
+
+.mkt-btn {
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.mkt-btn-primary {
+  background: var(--mkt-accent);
+  color: white;
+}
+.mkt-btn-primary:hover:not(:disabled) {
+  background: var(--mkt-accent-hover);
+}
+.mkt-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mkt-btn-secondary {
+  background: transparent;
+  color: var(--mkt-text-secondary);
+  border: 1px solid var(--mkt-border);
+}
+.mkt-btn-secondary:hover {
+  background: #f3f4f6;
+  color: var(--mkt-text-primary);
+}
+
+.mkt-btn-ghost {
+  background: transparent;
+  color: var(--mkt-text-secondary);
   font-size: 13px;
+  padding: 6px 12px;
+}
+.mkt-btn-ghost:hover {
+  color: var(--mkt-accent);
 }
 
-.badge.active { background: #e6f7ef; color: #0a8a3a; }
-.badge.inactive { background: #fff6f6; color: #b00020; }
-
-.row-actions { display:flex; gap:6px; }
-
-.row-actions button {
-  padding: 6px 8px;
-  border-radius:6px;
-  border:none;
-  cursor:pointer;
+/* --- Table --- */
+.mkt-table-wrapper {
+  overflow-x: auto;
 }
 
-.row-actions button:first-child { background:#f59e0b; color:white; }
-.row-actions button.delete { background:#ef4444; color:white; }
+.mkt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.mkt-table th {
+  text-align: left;
+  padding: 16px 24px;
+  background: #f8fafc;
+  color: var(--mkt-text-secondary);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--mkt-border);
+}
+
+.mkt-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--mkt-border);
+  vertical-align: middle;
+}
+
+.mkt-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.mkt-table tbody tr:hover {
+  background: #fafafa;
+}
+
+/* Helpers */
+.fw-500 { font-weight: 500; }
+.text-muted { color: var(--mkt-text-secondary); font-size: 13px; }
+
+/* Status Badge */
+.mkt-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mkt-badge.active {
+  background: var(--mkt-success-bg);
+  color: var(--mkt-success-text);
+}
+.mkt-badge.active::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.mkt-badge.inactive {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Row Actions (Text buttons instead of heavy blocks) */
+.mkt-row-actions {
+  text-align: right;
+}
+
+.mkt-link-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mkt-text-primary);
+  margin-left: 16px;
+  padding: 4px;
+  transition: opacity 0.2s;
+}
+
+.mkt-link-btn:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+.mkt-link-btn.danger {
+  color: var(--mkt-danger);
+}
+
+.mkt-empty, .mkt-loading {
+  padding: 40px;
+  text-align: center;
+  color: var(--mkt-text-secondary);
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .mkt-grid {
+    grid-template-columns: 1fr;
+  }
+  .span-2 {
+    grid-column: span 1;
+  }
+  .mkt-container {
+    padding: 16px;
+  }
+}

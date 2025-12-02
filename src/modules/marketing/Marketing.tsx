@@ -7,8 +7,8 @@ type Campaign = {
   id?: string;
   title: string;
   discountPercentage: number;
-  startDate?: string; // ISO
-  endDate?: string;   // ISO
+  startDate?: string;
+  endDate?: string;
   isActive?: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -22,7 +22,7 @@ export default function Marketing(): React.JSX.Element {
   // Form state
   const [title, setTitle] = useState("");
   const [discount, setDiscount] = useState<number>(10);
-  const [startDate, setStartDate] = useState<string>(""); // yyyy-mm-dd
+  const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [isActive, setIsActive] = useState<boolean>(true);
   const [creating, setCreating] = useState<boolean>(false);
@@ -37,12 +37,10 @@ export default function Marketing(): React.JSX.Element {
     setLoading(true);
     setError(null);
     try {
-      console.log("%c[MARKETING] GET /marketing", "color: #0a66c2; font-weight: bold");
+      // console.log eliminados para limpieza en producción, puedes descomentarlos si necesitas debug
       const res = await api.get("/marketing");
-      console.log("%c[MARKETING] GET response", "color: #0a8a00; font-weight: bold", res.status, res.data);
       setCampaigns(res.data || []);
     } catch (err: any) {
-      console.error("%c[MARKETING] GET error", "color: #b00020; font-weight: bold", err);
       setError(err?.response?.data?.message || err.message || "Error al cargar campañas");
     } finally {
       setLoading(false);
@@ -53,14 +51,15 @@ export default function Marketing(): React.JSX.Element {
     if (e) e.preventDefault();
     setError(null);
 
-    // Validaciones básicas
-    if (!title.trim()) return setError("Título requerido.");
-    if (discount < 0 || discount > 100) return setError("El descuento debe estar entre 0 y 100.");
-    if (!startDate || !endDate) return setError("Fechas de inicio y fin requeridas.");
+    if (!title.trim()) return setError("El título es requerido.");
+    if (discount < 0 || discount > 100) return setError("Descuento inválido (0-100).");
+    if (!startDate || !endDate) return setError("Fechas requeridas.");
+    
     const s = new Date(startDate);
     const eDate = new Date(endDate);
+    
     if (isNaN(s.getTime()) || isNaN(eDate.getTime())) return setError("Fechas inválidas.");
-    if (s > eDate) return setError("La fecha de inicio debe ser antes de la fecha de fin.");
+    if (s > eDate) return setError("La fecha de inicio debe ser anterior al fin.");
 
     const payload = {
       title: title.trim(),
@@ -72,159 +71,179 @@ export default function Marketing(): React.JSX.Element {
 
     setCreating(true);
     try {
-      console.log("%c[MARKETING] POST /marketing", "color: #0a66c2; font-weight: bold");
-      console.log("→ Payload:", payload);
-
       const res = await api.post("/marketing", payload);
-
-      console.log("%c[MARKETING] POST response", "color: #0a8a00; font-weight: bold", res.status, res.data);
-
-      // Inserta la campaña creada (si backend la retorna) o refetch
       if (res.data && (res.data._id || res.data.id)) {
         setCampaigns((prev) => [res.data, ...prev]);
       } else {
         await fetchCampaigns();
       }
-
-      // reset form
-      setTitle("");
-      setDiscount(10);
-      setStartDate("");
-      setEndDate("");
-      setIsActive(true);
+      resetForm();
     } catch (err: any) {
-      console.error("%c[MARKETING] POST error", "color: #b00020; font-weight: bold", err);
       setError(err?.response?.data?.message || err.message || "Error al crear campaña");
     } finally {
       setCreating(false);
     }
   }
 
+  const resetForm = () => {
+    setTitle("");
+    setDiscount(10);
+    setStartDate("");
+    setEndDate("");
+    setIsActive(true);
+  };
+
   async function handleToggle(id: string) {
     setError(null);
     try {
-      console.log(`%c[MARKETING] PATCH /marketing/${id}/toggle`, "color: #0a66c2; font-weight: bold");
       const res = await api.patch(`/marketing/${id}/toggle`);
-      console.log("%c[MARKETING] PATCH response", "color: #0a8a00; font-weight: bold", res.status, res.data);
-
-      // update local state
       setCampaigns((prev) => prev.map((c) => (getId(c) === id ? res.data : c)));
     } catch (err: any) {
-      console.error("%c[MARKETING] PATCH error", "color: #b00020; font-weight: bold", err);
-      setError(err?.response?.data?.message || err.message || "Error al alternar campaña");
+      setError("No se pudo actualizar el estado.");
     }
   }
 
   async function handleDelete(id: string) {
-    const ok = window.confirm("¿Eliminar campaña?");
-    if (!ok) return;
+    if (!window.confirm("¿Estás seguro de eliminar esta campaña?")) return;
     setError(null);
     try {
-      console.log(`%c[MARKETING] DELETE /marketing/${id}`, "color: #0a66c2; font-weight: bold");
-      const res = await api.delete(`/marketing/${id}`);
-      console.log("%c[MARKETING] DELETE response", "color: #0a8a00; font-weight: bold", res.status, res.data);
-
+      await api.delete(`/marketing/${id}`);
       setCampaigns((prev) => prev.filter((c) => getId(c) !== id));
     } catch (err: any) {
-      console.error("%c[MARKETING] DELETE error", "color: #b00020; font-weight: bold", err);
-      setError(err?.response?.data?.message || err.message || "Error al eliminar campaña");
+      setError("No se pudo eliminar la campaña.");
     }
   }
 
   return (
-    <div className="marketing-page">
-      <header className="marketing-header">
-        <h1>Campañas de Marketing</h1>
+    <div className="mkt-container">
+      {/* Header */}
+      <header className="mkt-header">
         <div>
-          <button onClick={fetchCampaigns}>Refrescar</button>
+          <h1 className="mkt-title">Marketing</h1>
+          <p className="mkt-subtitle">Gestiona tus campañas y descuentos activos.</p>
         </div>
+        <button onClick={fetchCampaigns} className="mkt-btn mkt-btn-ghost">
+          Actualizar lista
+        </button>
       </header>
 
-      {error && <div className="marketing-error">{error}</div>}
+      {error && <div className="mkt-alert">{error}</div>}
 
-      <section className="marketing-create">
-        <h3>Crear campaña</h3>
-        <form onSubmit={handleCreate} className="marketing-form">
-          <label>Título</label>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} required />
+      {/* Create Section */}
+      <section className="mkt-card mkt-create-section">
+        <h3 className="mkt-section-title">Nueva Campaña</h3>
+        <form onSubmit={handleCreate} className="mkt-form">
+          <div className="mkt-grid">
+            <div className="mkt-field span-2">
+              <label>Título de campaña</label>
+              <input 
+                type="text" 
+                placeholder="Ej: Black Friday 2025" 
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+              />
+            </div>
+            
+            <div className="mkt-field">
+              <label>Descuento (%)</label>
+              <input
+                type="number"
+                min={0}
+                max={100}
+                value={discount}
+                onChange={(e) => setDiscount(Number(e.target.value))}
+              />
+            </div>
 
-          <label>Descuento (%)</label>
-          <input
-            type="number"
-            min={0}
-            max={100}
-            value={discount}
-            onChange={(e) => setDiscount(Number(e.target.value))}
-            required
-          />
+            <div className="mkt-field checkbox-field">
+               <label className="mkt-checkbox-label">
+                <input 
+                  type="checkbox" 
+                  checked={isActive} 
+                  onChange={(e) => setIsActive(e.target.checked)} 
+                />
+                <span className="checkbox-custom"></span>
+                Campaña activa
+              </label>
+            </div>
 
-          <label>Fecha inicio</label>
-          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+            <div className="mkt-field">
+              <label>Inicio</label>
+              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            </div>
 
-          <label>Fecha fin</label>
-          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
+            <div className="mkt-field">
+              <label>Fin</label>
+              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+            </div>
+          </div>
 
-          <label>
-            <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} /> Activa
-          </label>
-
-          <div className="marketing-actions">
-            <button type="submit" disabled={creating}>{creating ? "Creando..." : "Crear"}</button>
-            <button type="button" onClick={() => { setTitle(""); setDiscount(10); setStartDate(""); setEndDate(""); setIsActive(true); }}>Limpiar</button>
+          <div className="mkt-actions">
+            <button type="button" onClick={resetForm} className="mkt-btn mkt-btn-secondary">
+              Cancelar
+            </button>
+            <button type="submit" disabled={creating} className="mkt-btn mkt-btn-primary">
+              {creating ? "Guardando..." : "Crear Campaña"}
+            </button>
           </div>
         </form>
       </section>
 
-      <section className="marketing-list">
-        <h3>Listado</h3>
-
+      {/* List Section */}
+      <section className="mkt-card mkt-list-section">
         {loading ? (
-          <div>Cargando campañas...</div>
+          <div className="mkt-loading">Cargando datos...</div>
         ) : campaigns.length === 0 ? (
-          <div>No hay campañas.</div>
+          <div className="mkt-empty">No hay campañas registradas.</div>
         ) : (
-          <table className="marketing-table">
-            <thead>
-              <tr>
-                <th>Título</th>
-                <th>Descuento</th>
-                <th>Inicio</th>
-                <th>Fin</th>
-                <th>Estado</th>
-                <th>Creado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {campaigns.map((c) => {
-                const id = getId(c);
-                return (
-                  <tr key={id || Math.random()}>
-                    <td>{c.title}</td>
-                    <td>{c.discountPercentage}%</td>
-                    <td>{c.startDate ? new Date(c.startDate).toLocaleDateString() : "-"}</td>
-                    <td>{c.endDate ? new Date(c.endDate).toLocaleDateString() : "-"}</td>
-                    <td>
-                      <span className={`badge ${c.isActive ? "active" : "inactive"}`}>
-                        {c.isActive ? "Activa" : "Inactiva"}
-                      </span>
-                    </td>
-                    <td>{c.createdAt ? new Date(c.createdAt).toLocaleString() : "-"}</td>
-                    <td>
-                      <div className="row-actions">
-                        <button onClick={() => { const realId = id; if (!realId) return alert("Campaña sin ID"); handleToggle(realId); }}>
-                          {c.isActive ? "Desactivar" : "Activar"}
+          <div className="mkt-table-wrapper">
+            <table className="mkt-table">
+              <thead>
+                <tr>
+                  <th>Estado</th>
+                  <th>Campaña</th>
+                  <th>Descuento</th>
+                  <th>Vigencia</th>
+                  <th style={{ textAlign: "right" }}>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {campaigns.map((c) => {
+                  const id = getId(c);
+                  return (
+                    <tr key={id || Math.random()}>
+                      <td>
+                        <span className={`mkt-badge ${c.isActive ? "active" : "inactive"}`}>
+                          {c.isActive ? "Activa" : "Pausada"}
+                        </span>
+                      </td>
+                      <td className="fw-500">{c.title}</td>
+                      <td>{c.discountPercentage}%</td>
+                      <td className="text-muted">
+                        {c.startDate ? new Date(c.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : "-"} 
+                        {" → "} 
+                        {c.endDate ? new Date(c.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : "-"}
+                      </td>
+                      <td className="mkt-row-actions">
+                        <button 
+                          className="mkt-link-btn"
+                          onClick={() => id && handleToggle(id)}
+                        >
+                          {c.isActive ? "Pausar" : "Activar"}
                         </button>
-                        <button className="delete" onClick={() => { const realId = id; if (!realId) return alert("Campaña sin ID"); handleDelete(realId); }}>
+                        <button 
+                          className="mkt-link-btn danger" 
+                          onClick={() => id && handleDelete(id)}
+                        >
                           Eliminar
                         </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </section>
     </div>
